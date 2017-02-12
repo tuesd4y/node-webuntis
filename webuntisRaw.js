@@ -9,7 +9,7 @@
 * ---------------------------------------------------------------------------- */
 
 const _ = require("lodash"),
-    https = require("https");
+    https = require("https"),
     extend = require("util")._extend;
 
 let _loggedIn = false;
@@ -89,7 +89,7 @@ function setup(username, password, schoolName) {
 
 
 function rpc(method, params, cb) {
-    if(_loggedIn || method == authMethod) {
+    if(_loggedIn || method === authMethod) {
 
         let body = JSON.stringify(generateParams(method, params));
 
@@ -132,13 +132,16 @@ function connect() {
             info = extend(info, result);
             if(info.sessionId) {
                 _loggedIn = true;
+                console.log("connected!");
             }
         });
 }
 
 module.exports = {
+    info: info,
     rpc: rpc,
     connect: connect,
     setup: setup,
     setupWithObject: setupWithObject,
 };
+

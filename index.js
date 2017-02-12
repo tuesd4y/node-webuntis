@@ -7,18 +7,14 @@
  *
  * ---------------------------------------------------------------------------- */
 
-const webuntis = require('./webuntis');
+const w = require("./webuntisWrapper");
+const e = require("./entities.js");
 
-// webuntis.setup("username", "password", "schoolName");
-webuntis.setupWithObject(require('./credentials.json'));
-
-webuntis.connect().then(() => {
-
-    webuntis.rpc("getTeachers", {}, data => {
-        console.log(data);
+w.connectPromise.then(() => {
+    w.getTimetable(new e.TimeTableEntity(w.info.personId, w.info.personType), undefined, res => {
+        console.log(res);
     });
-
-    console.log("done");
-
 });
+
+
 

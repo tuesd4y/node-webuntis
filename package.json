@@ -10,6 +10,8 @@
   "author": "tuesd4y",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.4"
+    "enumify": "^1.0.4",
+    "lodash": "^4.17.4",
+    "moment": "^2.17.1"
   }
 }
