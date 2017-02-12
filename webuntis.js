@@ -11,15 +11,15 @@
 const isDate = require("util").isDate,
     isUndefined = require("util").isUndefined,
     moment = require("moment"),
-    webuntis = require("./webuntisRaw");
+    rpc = require("./rpcWrapper");
 
 const DATE_FORMAT = "YYYYMMDD";
 const TIME_FORMAT = "hhmm";
 
-// webuntis.setup("username", "password", "schoolName");
-webuntis.setupWithObject(require('./credentials.json'));
+// rpc.setup("username", "password", "schoolName");
+rpc.setupWithObject(require('./credentials.json'));
 
-let connectPromise = webuntis.connect();
+let connectPromise = rpc.connect();
 
 exports.getTimetable = function(timeTableEntity, dateInWeek) {
     return new Promise((resolve, reject) => {
@@ -35,7 +35,7 @@ exports.getTimetable = function(timeTableEntity, dateInWeek) {
 
         let endDate = startDate.clone().add(5, 'days');
 
-        connectPromise.then(webuntis.rpc("getTimetable", {
+        connectPromise.then(rpc.rpc("getTimetable", {
             type: timeTableEntity.type,
             id: timeTableEntity.id,
             startDate: parseInt(startDate.format(DATE_FORMAT)),
@@ -43,7 +43,7 @@ exports.getTimetable = function(timeTableEntity, dateInWeek) {
         }, data => {
             if (data.error) {
                 reject(data.error);
-            } else if (data.result) {
+            } else {
                 resolve(data.result);
             }
         }))
@@ -51,18 +51,61 @@ exports.getTimetable = function(timeTableEntity, dateInWeek) {
 };
 
 exports.getClasses = function() {
-
     return new Promise((resolve,reject) => {
-        connectPromise.then(webuntis.rpc("getKlassen", {}, data => {
+        connectPromise.then(rpc.rpc("getKlassen", {}, data => {
             if (data.error) {
                 reject(data.error);
-            } else if (data.result) {
+            } else {
                 resolve(data.result);
             }
         }));
     });
 };
 
+exports.getRooms = function() {
+    return new Promise((resolve, reject) => {
+        connectPromise.then(rpc.rpc("getRooms", {}, data => {
+            if(data.error)
+                reject(data.error);
+            else
+                resolve(data.result)
+        }))
+    });
+};
+
+exports.getSubjects = function() {
+    return new Promise((resolve, reject) => {
+        connectPromise.then(rpc.rpc("getSubjects", {}, data => {
+            if(data.error)
+                reject(data.error);
+            else
+                resolve(data.result)
+        }))
+    });
+};
+
+exports.getStatusData = function() {
+    return new Promise((resolve, reject) => {
+        connectPromise.then(rpc.rpc("getStatusData", {}, data => {
+            if(data.error)
+                reject(data.error);
+            else
+                resolve(data.result)
+        }))
+    });
+};
+
+exports.getHolidays = function() {
+    return new Promise((resolve, reject) => {
+        connectPromise.then(rpc.rpc("getHolidays", {}, data => {
+            if(data.error)
+                reject(data.error);
+            else
+                resolve(data.result)
+        }))
+    });
+};
+
 exports.getKlassen = exports.getClasses;
-exports.info = webuntis.info;
+exports.info = rpc.info;
 exports.connectPromise = connectPromise;

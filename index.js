@@ -7,7 +7,7 @@
  *
  * ---------------------------------------------------------------------------- */
 
-const w = require("./webuntisWrapper");
+const w = require("./webuntis");
 const e = require("./entities.js");
 
 w.connectPromise.then(() => {
@@ -15,6 +15,18 @@ w.connectPromise.then(() => {
         .then(data => console.log(data));
 
     w.getClasses()
+        .then(data => console.log(data));
+
+    w.getRooms()
+        .then(data => console.log(data));
+
+    w.getSubjects()
+        .then(data => console.log(data));
+
+    w.getStatusData()
+        .then(data => console.log(data));
+
+    w.getHolidays()
         .then(data => console.log(data));
 });
 
