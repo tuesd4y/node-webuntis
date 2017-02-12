@@ -11,9 +11,11 @@ const w = require("./webuntisWrapper");
 const e = require("./entities.js");
 
 w.connectPromise.then(() => {
-    w.getTimetable(new e.TimeTableEntity(w.info.personId, w.info.personType), undefined, res => {
-        console.log(res);
-    });
+    w.getTimetable(new e.TimeTableEntity(w.info.personId, w.info.personType))
+        .then(data => console.log(data));
+
+    w.getClasses()
+        .then(data => console.log(data));
 });
 
 
