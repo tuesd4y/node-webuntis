@@ -28,6 +28,8 @@ w.connectPromise.then(() => {
 
     w.getHolidays()
         .then(data => console.log(data));
+
+    w.logOut();
 });
 
 

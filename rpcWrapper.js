@@ -137,11 +137,20 @@ function connect() {
         });
 }
 
+function disconnect() {
+    return rpc("logout", {}, data => {
+        _loggedIn = false;
+        console.log("disconnected!");
+    });
+}
+
 module.exports = {
     info: info,
     rpc: rpc,
     connect: connect,
     setup: setup,
     setupWithObject: setupWithObject,
+    loggedIn: _loggedIn,
+    logOut: disconnect(),
 };
 

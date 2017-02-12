@@ -106,6 +106,14 @@ exports.getHolidays = function() {
     });
 };
 
+exports.isLoggedIn = function () {
+    return rpc.loggedIn;
+};
+
+exports.logOut = function () {
+    return rpc.logOut;
+};
+
 exports.getKlassen = exports.getClasses;
 exports.info = rpc.info;
 exports.connectPromise = connectPromise;
