@@ -79,69 +79,86 @@ function setupWithObject(options) {
     if(options.schoolName) config.url = url(options.schoolName);
     if(options.username) config.userName = options.username;
     if(options.password) config.password = options.password;
+
+    return connect();
 }
 
 function setup(username, password, schoolName) {
     config.userName = username;
     config.password = password;
-    config.url = url(schoolName)
+    config.url = url(schoolName);
+
+    return connect();
 }
 
 
 function rpc(method, params, cb) {
-    if(_loggedIn || method === authMethod) {
+    return new Promise((resolve, reject) => {
+        if(_loggedIn || method === authMethod) {
 
-        let body = JSON.stringify(generateParams(method, params));
+            let body = JSON.stringify(generateParams(method, params));
 
-        let headers = {
-            "Content-Type": "application/json",
-            "Content-Length": `${body.length}`
-        };
+            let headers = {
+                "Content-Type": "application/json",
+                "Content-Length": `${body.length}`
+            };
 
-        let u = config.url;
+            let u = config.url;
 
-        if (info.sessionId && info.sessionId !== null) {
-            headers["Cookie"] = `JSESSIONID=${info.sessionId}`;
-            u = baseUrl;
+            if (info.sessionId && info.sessionId !== null) {
+                headers["Cookie"] = `JSESSIONID=${info.sessionId}`;
+                u = baseUrl;
+            }
+
+
+            let options = {
+                method: "POST",
+                hostname: "mese.webuntis.com",
+                path: u,
+                headers: headers,
+            };
+
+            return httpRequest(options, body)
+                .then(cb)
+        } else {
+            return reject("not authenticated");
         }
-
-
-        let options = {
-            method: "POST",
-            hostname: "mese.webuntis.com",
-            path: u,
-            headers: headers,
-        };
-
-        return httpRequest(options, body)
-            .then(cb)
-    } else {
-        return Promise.reject();
-    }
+    });
 }
 
 function connect() {
-    return rpc(authMethod, {
-            user: config.userName,
-            client:"MY CLIENT",
-            password: config.password
-        },
-        (data) => {
-            let result = data.result;
+    return new Promise((resolve, reject) => {
+        rpc(authMethod, {
+                user: config.userName,
+                client: "MY CLIENT",
+                password: config.password
+            },
+            (data) => {
+                try {
+                    let result = data.result;
 
-            info = extend(info, result);
-            if(info.sessionId) {
-                _loggedIn = true;
-                console.log("connected!");
-            }
-        });
+                    info = extend(info, result);
+                    if (info.sessionId) {
+                        _loggedIn = true;
+                        console.log("connected!");
+                        resolve(info)
+                    }
+                    else reject("no sessionId returned")
+                }
+                catch(error) {
+                    reject(error);
+                }
+            });
+    });
 }
 
 function disconnect() {
-    return rpc("logout", {}, data => {
-        _loggedIn = false;
-        console.log("disconnected!");
-    });
+    return new Promise((resolve, reject) => {rpc("logout", {}, data => {
+            _loggedIn = false;
+            console.log("disconnected!");
+            resolve(data)
+        });
+    })
 }
 
 module.exports = {
@@ -151,6 +168,6 @@ module.exports = {
     setup: setup,
     setupWithObject: setupWithObject,
     loggedIn: _loggedIn,
-    logOut: disconnect(),
+    logOut: disconnect,
 };
 

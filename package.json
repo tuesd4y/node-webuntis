@@ -1,18 +1,18 @@
 {
   "name": "untis-api",
   "version": "1.0.0",
-  "description": "a sime",
+  "description": "a simple api for webuntis",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "tuesd4y",
+  "author": "tuesd4y <c.stelzmueller@yahoo.com>",
   "license": "ISC",
   "dependencies": {
     "enumify": "^1.0.4",
     "lodash": "^4.17.4",
     "moment": "^2.17.1",
-    "rxjs": "^5.1.0"°
+    "rxjs": "^5.1.0"
   }
 }

@@ -8,29 +8,13 @@
  * ---------------------------------------------------------------------------- */
 
 const w = require("./webuntis");
-const e = require("./entities.js");
+const e = w.entities;
 
-w.connectPromise.then(() => {
+w.connect(require('./credentials.json')).then(() => {
     w.getTimetable(new e.TimeTableEntity(w.info.personId, w.info.personType))
-        .then(data => console.log(data));
-
-    w.getClasses()
-        .then(data => console.log(data));
-
-    w.getRooms()
-        .then(data => console.log(data));
-
-    w.getSubjects()
-        .then(data => console.log(data));
-
-    w.getStatusData()
-        .then(data => console.log(data));
-
-    w.getHolidays()
-        .then(data => console.log(data));
+        .then(d => console.log(d));
 
     w.logOut();
 });
-
 
 
