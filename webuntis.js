@@ -4,32 +4,32 @@
  *
  *  by Christopher Stelzmüller (tuesd4y)
  *  12.02.2017 (tuesd4y) :: created
- *  12.02.2017
+ *  15.02.2017 (tuesd4y) :: edited syntax and export statements
  *
  * ---------------------------------------------------------------------------- */
 
 const isDate = require("util").isDate,
     isUndefined = require("util").isUndefined,
     moment = require("moment"),
+    isObject = require("util").isObject,
+    isString = require("util").isString,
+    isNumber = require("util").isNumber,
     rpc = require("./rpcWrapper");
-var isObject = require("util").isObject;
-var isString = require("util").isString;
-var isNumber = require("util").isNumber;
 
 const DATE_FORMAT = "YYYYMMDD";
 const TIME_FORMAT = "hhmm";
 
 let connectPromise = null;
 
-exports.connect = function(creds, password, schoolname) {
+function connect(creds, password, schoolname) {
     if(isObject(creds)) {
         return connectPromise = rpc.setupWithObject(creds)
     }
 
     else return connectPromise = rpc.setup(creds, password, schoolname)
-};
+}
 
-exports.getTeachers = function() {
+function getTeachers() {
     return new Promise((resolve,reject) => {
         connectPromise.then(rpc.rpc("getTeachers", {}, data => {
             if (data.error) {
@@ -40,9 +40,9 @@ exports.getTeachers = function() {
             }
         }));
     });
-};
+}
 
-exports.getClasses = function() {
+function getClasses() {
     return new Promise((resolve,reject) => {
         connectPromise.then(rpc.rpc("getKlassen", {}, data => {
             if (data.error) {
@@ -53,9 +53,9 @@ exports.getClasses = function() {
             }
         }));
     });
-};
+}
 
-exports.getSubjects = function() {
+function getSubjects() {
     return new Promise((resolve, reject) => {
         connectPromise.then(rpc.rpc("getSubjects", {}, data => {
             if(data.error) {
@@ -66,9 +66,9 @@ exports.getSubjects = function() {
                 resolve(data.result)
         }))
     });
-};
+}
 
-exports.getRooms = function() {
+function getRooms() {
     return new Promise((resolve, reject) => {
         connectPromise.then(rpc.rpc("getRooms", {}, data => {
             if(data.error) {
@@ -79,9 +79,9 @@ exports.getRooms = function() {
                 resolve(data.result)
         }))
     });
-};
+}
 
-exports.getDepartments = function() {
+function getDepartments() {
     return new Promise((resolve, reject) => {
         connectPromise.then(rpc.rpc("getDepartments", {}, data => {
             if(data.error) {
@@ -92,9 +92,9 @@ exports.getDepartments = function() {
                 resolve(data.result)
         }))
     });
-};
+}
 
-exports.getHolidays = function() {
+function getHolidays() {
     return new Promise((resolve, reject) => {
         connectPromise.then(rpc.rpc("getHolidays", {}, data => {
             if(data.error) {
@@ -105,9 +105,9 @@ exports.getHolidays = function() {
                 resolve(data.result)
         }))
     });
-};
+}
 
-exports.getTimegridUnits = function() {
+function getTimegridUnits () {
     return new Promise((resolve, reject) => {
         connectPromise.then(rpc.rpc("getTimegridUnits", {}, data => {
             if(data.error) {
@@ -118,9 +118,9 @@ exports.getTimegridUnits = function() {
                 resolve(data.result)
         }))
     });
-};
+}
 
-exports.getStatusData = function() {
+function getStatusData() {
     return new Promise((resolve, reject) => {
         connectPromise.then(rpc.rpc("getStatusData", {}, data => {
             if(data.error) {
@@ -131,9 +131,9 @@ exports.getStatusData = function() {
                 resolve(data.result)
         }))
     });
-};
+}
 
-exports.getCurrentSchoolYear = function() {
+function getCurrentSchoolYear() {
     return new Promise((resolve, reject) => {
         connectPromise.then(rpc.rpc("getCurrentSchoolyear", {}, data => {
             if(data.error) {
@@ -144,9 +144,9 @@ exports.getCurrentSchoolYear = function() {
                 resolve(data.result)
         }))
     });
-};
+}
 
-exports.getSchoolYears = function() {
+function getSchoolYears() {
     return new Promise((resolve, reject) => {
         connectPromise.then(rpc.rpc("getSchoolyears", {}, data => {
             if(data.error) {
@@ -157,9 +157,9 @@ exports.getSchoolYears = function() {
                 resolve(data.result)
         }))
     });
-};
+}
 
-exports.getTimetable = function(timeTableEntity, dateInWeek) {
+function getTimetable(timeTableEntity, dateInWeek) {
     return new Promise((resolve, reject) => {
         if (isUndefined(timeTableEntity)) {
             throw Error("please pass a timeTableEntity");
@@ -186,9 +186,9 @@ exports.getTimetable = function(timeTableEntity, dateInWeek) {
             }
         }))
     });
-};
+}
 
-exports.getClassRegisterForPeriod = function(timeTableId) {
+function getClassRegisterForPeriod(timeTableId) {
     return new Promise((resolve, reject) => {
         if(!isNumber(timeTableId)){
             throw Error("timeTableId has to be a number")
@@ -204,9 +204,9 @@ exports.getClassRegisterForPeriod = function(timeTableId) {
                 resolve(data.result)
         }));
     });
-};
+}
 
-exports.lastImportTime = function() {
+function getLastImportTime() {
     return new Promise((resolve, reject) => {
         connectPromise.then(rpc.rpc("getLastImportTime", {}, data => {
             if(data.error) {
@@ -217,9 +217,9 @@ exports.lastImportTime = function() {
                 resolve(data.result);
         }))
     });
-};
+}
 
-exports.searchPerson = function(type, firstName, lastName, dateOfBirth) {
+function searchPerson(type, firstName, lastName, dateOfBirth) {
     return new Promise((resolve, reject) => {
         if(!isString(firstName) || !isString(lastName)) {
             throw Error("firstName and lastName must be strings");
@@ -243,20 +243,46 @@ exports.searchPerson = function(type, firstName, lastName, dateOfBirth) {
                 resolve(data.result)
         }))
     });
-};
+}
 
 //TODO: methods still missing: requestSubsitutions, classRegEvents
 
-exports.isLoggedIn = function () {
+function isLoggedIn() {
     return rpc.loggedIn;
-};
+}
 
-exports.logOut = function () {
+function logout() {
     return rpc.logOut;
-};
+}
 
 exports.getKlassen = exports.getClasses;
 exports.info = rpc.info;
 exports.connectPromise = connectPromise;
 
 exports.entities = require("./entities");
+
+module.exports = {
+    connect: connect,
+    logout: logout,
+    connectPromise: connectPromise,
+    isLoggedIn: isLoggedIn,
+    info: rpc.info,
+
+    getKlassen: getClasses,
+    getClasses,
+    getTeachers,
+    getSubjects,
+    getRooms,
+    getDepartments,
+    getHolidays,
+    getStatusData,
+    getTimegridUnits,
+    getCurrentSchoolYear,
+    getSchoolYears,
+    getTimetable,
+    getClassRegisterForPeriod,
+    getLastImportTime,
+    searchPerson,
+
+    Entities: require("./entities")
+};
