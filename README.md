@@ -7,7 +7,7 @@ A simple interface for accessing the webuntis API
   `npm init`
 * install the api
 
-  `npm install --save untis-api`
+  `npm install --save https://github.com/DavidM42/node-webuntis.git`
 
 * write something like this in your main.js
 
