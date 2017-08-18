@@ -54,6 +54,7 @@ let config = {
     url: null,
     userName: null,
     password: null,
+    servername: null,
 };
 
 let info = {};
@@ -76,6 +77,7 @@ function url(schoolname) {
 
 
 function setupWithObject(options) {
+    if(options.servername) config.servername = options.servername;
     if(options.schoolName) config.url = url(options.schoolName);
     if(options.username) config.userName = options.username;
     if(options.password) config.password = options.password;
@@ -112,7 +114,7 @@ function rpc(method, params, cb) {
 
 
             let concatHostname = config.servername + ".webuntis.com";
-            
+
             let options = {
                 method: "POST",
                 hostname: concatHostname,
