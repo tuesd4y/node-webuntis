@@ -7,7 +7,7 @@
 *  12.02.2017 (tuesd4y) :: updated
 *
 * ---------------------------------------------------------------------------- */
-
+"use strict";
 const _ = require("lodash"),
     https = require("https"),
     extend = require("util")._extend;
@@ -170,4 +170,3 @@ module.exports = {
     loggedIn: _loggedIn,
     logOut: disconnect,
 };
-

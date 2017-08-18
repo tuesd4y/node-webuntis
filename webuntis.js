@@ -7,7 +7,7 @@
  *  15.02.2017 (tuesd4y) :: edited syntax and export statements
  *
  * ---------------------------------------------------------------------------- */
-
+"use strict";
 const isDate = require("util").isDate,
     isUndefined = require("util").isUndefined,
     moment = require("moment"),
