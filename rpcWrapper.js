@@ -111,9 +111,11 @@ function rpc(method, params, cb) {
             }
 
 
+            let concatHostname = config.servername + ".webuntis.com";
+            
             let options = {
                 method: "POST",
-                hostname: config.servername + ".webuntis.com",
+                hostname: concatHostname,
                 path: u,
                 headers: headers,
             };
