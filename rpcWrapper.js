@@ -87,7 +87,7 @@ function setup(username, password, schoolName, servername) {
     config.userName = username;
     config.password = password;
     config.url = url(schoolName);
-    config.servername = UntisServer;
+    config.servername = servername;
     return connect();
 }
 
