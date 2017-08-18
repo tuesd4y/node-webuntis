@@ -21,12 +21,12 @@ const TIME_FORMAT = "hhmm";
 
 let connectPromise = null;
 
-function connect(creds, password, schoolname) {
+function connect(creds, password, schoolname, servername) {
     if(isObject(creds)) {
         return connectPromise = rpc.setupWithObject(creds)
     }
 
-    else return connectPromise = rpc.setup(creds, password, schoolname)
+    else return connectPromise = rpc.setup(creds, password, schoolname, servername)
 }
 
 function getTeachers() {
