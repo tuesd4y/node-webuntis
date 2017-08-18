@@ -83,11 +83,11 @@ function setupWithObject(options) {
     return connect();
 }
 
-function setup(username, password, schoolName) {
+function setup(username, password, schoolName, servername) {
     config.userName = username;
     config.password = password;
     config.url = url(schoolName);
-
+    config.servername = UntisServer;
     return connect();
 }
 
@@ -113,7 +113,7 @@ function rpc(method, params, cb) {
 
             let options = {
                 method: "POST",
-                hostname: "mese.webuntis.com",
+                hostname: config.servername + ".webuntis.com",
                 path: u,
                 headers: headers,
             };

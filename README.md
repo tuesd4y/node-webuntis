@@ -15,7 +15,7 @@ A simple interface for accessing the webuntis API
   const w = require("untis-api");
   const e = w.entities;
 
-  w.connect("username", "password", "school").then(() => {
+  w.connect("username", "password", "school", "borys").then(() => {
       w.getTeachers().then(teachers => {
         console.log(teachers);
       });
@@ -39,16 +39,17 @@ A __Promise__ that is either resolved if the connection was successful or reject
 
 #### Usage
 ```js
-w.connect("username", "password", "school");
+w.connect("username", "password", "school", "servername");
 ```
 #### Parameters
-* Username, Password and Schoolname as Strings
+* Username, Password, Schoolname and Servername as Strings
 * An object containing the login information in the following structure
   ```json
   {
     "schoolName": "school",
     "username": "username",
-    "password": "password"
+    "password": "password",
+    "servername": "borys",
   }
   ```
 
@@ -335,6 +336,49 @@ w.getTimetable(new TimeTableEntity(1, 5)).then(data => console.log(data));
 #### Parameters
 `getTimetable(tte)`
 * tte: a TimeTableEntity containing the person whose timetable you want to watch's id and personType
+
+#### Returns
+A lot of data, better see for yourself...
+
+***
+
+## getCustomTimetable
+
+#### Usage
+
+```js
+TimeTableEntity = require("untis-api").Entities.TimeTableEntity;
+
+w.getTimetable(new TimeTableEntity(1, 5), {
+  showSubstText: true,
+  showLsText: true,
+  klasseFields: ["name"],
+  roomFields: ["name"],
+  subjectFields: ["name"]
+}).then(data => console.log(data));
+```
+#### Parameters
+`getTimetable(tte, paramsObject)`
+* tte: a TimeTableEntity containing the person whose timetable you want to watch's id and personType
+* paramsObject: a Object with all custom parameters as properties of this object with their respective value
+
+##### Valid properties:
+- startDate: number, format: YYYYMMDD, optional (default: monday of this week)
+- endDate: number, format: YYYYMMDD, optional (default: friday of this week)
+- showBooking: boolean, returns the period's booking info if available (default: false)
+- showInfo: boolean, returns the period information if available (default: false)
+- showSubstText: boolean, returns the Untis substitution text if available (default: false)
+- showLsText: boolean, returns the text of the period's lesson (default: false)
+- showLsNumber: boolean, returns the number of the period's lesson (default: false)
+- showStudentgroup: boolean, returns the name(s) of the studentgroup(s) (default: false)
+- klasseFields: array, optional, values: „id“, „name“, „longname“, „externalkey“
+- roomFields: array, optional, values: „id“, „name“, „longname“, „externalkey“
+- subjectFields: array, optional, values: „id“, „name“, „longname“, „externalkey“
+- teacherFields: array, optional, values: „id“, „name“, „longname“, „externalkey“
+
+
+If a Fields parameter (e.g. „teacherFields“) is not set explicitly, the return object will contain the
+internal id („keyType“: „id“) of the references (e.g. the teachers of a period) by default.
 
 #### Returns
 A lot of data, better see for yourself...
