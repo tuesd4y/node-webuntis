@@ -229,8 +229,8 @@ function getCustomTimetable(timeTableEntity, paramsObject,dateInWeek) {
         for (var property in paramsObject) {
             if (paramsObject.hasOwnProperty(property)) {
 
-              if (validOptions.indexOf(property) > -1)){
-                optionsObject[property] =
+              if (validOptions.indexOf(property) > -1){
+                optionsObject[property] = paramsObject[property];
               }
               else {
                 throw Error("Option: " + property + " is not a valid option for this method");
