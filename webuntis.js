@@ -344,6 +344,7 @@ module.exports = {
     getCurrentSchoolYear,
     getSchoolYears,
     getTimetable,
+    getCustomTimetable,
     getClassRegisterForPeriod,
     getLastImportTime,
     searchPerson,
