@@ -7,7 +7,7 @@
 *  12.02.2017 (tuesd4y) :: updated
 *
 * ---------------------------------------------------------------------------- */
-
+"use strict";
 const _ = require("lodash"),
     https = require("https"),
     extend = require("util")._extend;
@@ -54,6 +54,7 @@ let config = {
     url: null,
     userName: null,
     password: null,
+    servername: null,
 };
 
 let info = {};
@@ -76,6 +77,7 @@ function url(schoolname) {
 
 
 function setupWithObject(options) {
+    if(options.servername) config.servername = options.servername;
     if(options.schoolName) config.url = url(options.schoolName);
     if(options.username) config.userName = options.username;
     if(options.password) config.password = options.password;
@@ -83,11 +85,11 @@ function setupWithObject(options) {
     return connect();
 }
 
-function setup(username, password, schoolName) {
+function setup(username, password, schoolName, servername) {
     config.userName = username;
     config.password = password;
     config.url = url(schoolName);
-
+    config.servername = servername;
     return connect();
 }
 
@@ -111,9 +113,11 @@ function rpc(method, params, cb) {
             }
 
 
+            let concatHostname = config.servername + ".webuntis.com";
+
             let options = {
                 method: "POST",
-                hostname: "mese.webuntis.com",
+                hostname: concatHostname,
                 path: u,
                 headers: headers,
             };
@@ -170,4 +174,3 @@ module.exports = {
     loggedIn: _loggedIn,
     logOut: disconnect,
 };
-

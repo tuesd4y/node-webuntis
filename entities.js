@@ -7,7 +7,7 @@
  *  12.02.2017
  *
  * ---------------------------------------------------------------------------- */
-
+"use strict";
 const isNumber =  require("util").isNumber;
 
 class TimeTableEntity {

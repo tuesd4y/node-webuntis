@@ -2,7 +2,7 @@
   "name": "untis-api",
   "version": "1.0.0",
   "description": "a simple api for webuntis",
-  "main": "index.js",
+  "main": "webuntis.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

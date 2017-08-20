@@ -7,7 +7,7 @@
  *  15.02.2017 (tuesd4y) :: edited syntax and export statements
  *
  * ---------------------------------------------------------------------------- */
-
+"use strict";
 const isDate = require("util").isDate,
     isUndefined = require("util").isUndefined,
     moment = require("moment"),
@@ -21,12 +21,12 @@ const TIME_FORMAT = "hhmm";
 
 let connectPromise = null;
 
-function connect(creds, password, schoolname) {
+function connect(creds, password, schoolname, servername) {
     if(isObject(creds)) {
         return connectPromise = rpc.setupWithObject(creds)
     }
 
-    else return connectPromise = rpc.setup(creds, password, schoolname)
+    else return connectPromise = rpc.setup(creds, password, schoolname, servername)
 }
 
 function getTeachers() {
@@ -188,6 +188,70 @@ function getTimetable(timeTableEntity, dateInWeek) {
     });
 }
 
+function getCustomTimetable(timeTableEntity, paramsObject,dateInWeek) {
+    return new Promise((resolve, reject) => {
+        if (isUndefined(timeTableEntity)) {
+            throw Error("please pass a timeTableEntity");
+        }
+
+        if (isUndefined(dateInWeek) || !isDate(dateInWeek)) {
+            dateInWeek = moment();
+        }
+
+        let startDate = dateInWeek.subtract(dateInWeek.day(), 'days').add(1, 'days');
+
+        let endDate = startDate.clone().add(5, 'days');
+
+        let optionsObject = {
+          element: {
+            id: timeTableEntity.id,
+            type: timeTableEntity.type
+          },
+          startDate: parseInt(startDate.format(DATE_FORMAT)),
+          endDate: parseInt(endDate.format(DATE_FORMAT)),
+        };
+
+        let validOptions = [
+          "startDate",
+          "endDate",
+          "showBooking",
+          "showInfo",
+          "showSubstText",
+          "showLsText",
+          "showLsNumber",
+          "showStudentgroup",
+          "klasseFields",
+          "roomFields",
+          "subjectFields",
+          "teacherFields",
+        ];
+
+        for (var property in paramsObject) {
+            if (paramsObject.hasOwnProperty(property)) {
+
+              if (validOptions.indexOf(property) > -1){
+                optionsObject[property] = paramsObject[property];
+              }
+              else {
+                throw Error("Option: " + property + " is not a valid option for this method");
+              }
+
+            }
+        }
+
+        connectPromise.then(rpc.rpc("getTimetable", {
+            options: optionsObject,
+
+        }, data => {
+            if (data.error) {
+                throw Error(data.error);
+            } else {
+                resolve(data.result);
+            }
+        }))
+    });
+}
+
 function getClassRegisterForPeriod(timeTableId) {
     return new Promise((resolve, reject) => {
         if(!isNumber(timeTableId)){
@@ -280,6 +344,7 @@ module.exports = {
     getCurrentSchoolYear,
     getSchoolYears,
     getTimetable,
+    getCustomTimetable,
     getClassRegisterForPeriod,
     getLastImportTime,
     searchPerson,
