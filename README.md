@@ -349,7 +349,7 @@ A lot of data, better see for yourself...
 ```js
 TimeTableEntity = require("untis-api").Entities.TimeTableEntity;
 
-w.getTimetable(new TimeTableEntity(1, 5), {
+w.getCustomTimetable(new TimeTableEntity(1, 5), {
   showSubstText: true,
   showLsText: true,
   klasseFields: ["name"],
@@ -358,7 +358,7 @@ w.getTimetable(new TimeTableEntity(1, 5), {
 }).then(data => console.log(data));
 ```
 #### Parameters
-`getTimetable(tte, paramsObject)`
+`getCustomTimetable(tte, paramsObject)`
 * tte: a TimeTableEntity containing the person whose timetable you want to watch's id and personType
 * paramsObject: a Object with all custom parameters as properties of this object with their respective value
 
